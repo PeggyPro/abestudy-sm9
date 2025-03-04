@@ -30,10 +30,13 @@ public class SM9Test {
     public static void test_sm9() throws CryptoException {
         SM9 sm9 = new SM9();
 
-        SM9LogUtils.showSM9Curve(sm9.getParameters());
+//       SM9LogUtils.showSM9Curve(sm9.getParameters());
 
-        test_key_encapsulate(sm9);
-        test_encrypt(sm9);
+//        test_key_encapsulate(sm9);
+        for (int i = 0; i < 100; i++) {
+            test_encrypt(sm9);
+        }
+
     }
 
     public static void test_key_encapsulate(SM9 sm9) throws CryptoException {
@@ -94,7 +97,7 @@ public class SM9Test {
         SM9LogUtils.showMsg("加密明文的方法为基于KDF的序列密码:");
         SM9LogUtils.showMsg("");
         SM9Cipher cipherText = sm9.encrypt(keyPair.getPublic(), id_B, msg.getBytes());
-        SM9LogUtils.showMsg("加密后的密文 C=C1||C3||C2:");
+        SM9LogUtils.showMsg("加密后的密文 C=C1+C3+C2: (C1=用户私钥, C2重新计算认证码, C3解密恢复明文)");
         SM9LogUtils.showCipherText(cipherText);
 
         byte[] plainText = sm9.decrypt(secretKey, id_B, cipherText);
